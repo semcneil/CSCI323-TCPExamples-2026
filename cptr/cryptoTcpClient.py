@@ -134,8 +134,8 @@ def main(serverName, serverPort):
 
 if __name__ == "__main__":
   start_time = datetime.datetime.now()
-  # main('127.0.0.1', 12460)
-  main('173.236.244.178', 12460)
+  main('127.0.0.1', 12460)
+#   main('173.236.244.178', 12460)
 
   end_time = datetime.datetime.now()
   print(f'Total time: {end_time-start_time} s')

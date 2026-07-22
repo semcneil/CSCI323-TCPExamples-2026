@@ -5,7 +5,8 @@
 # Seth McNeill
 # 2025 April 07
 
-from socket import *
+# from socket import *
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
@@ -35,6 +36,7 @@ def main(connAddress, connPort):
 
   server_port = connPort
   server_socket = socket(AF_INET, SOCK_STREAM)
+  server_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)  # to allow it to reuse the address and not get Errno 48 must be before bind
   server_socket.bind((connAddress, server_port))
   server_socket.listen(1)
   print('The server is ready to receive')
@@ -100,6 +102,7 @@ def main(connAddress, connPort):
   except InvalidSignature as e:
      print("Invalid signature")
      connection_socket.send(b'\x00')
+  connection_socket.close()
 
   # send verification result
 #    connection_socket.close()
@@ -109,8 +112,8 @@ if __name__ == "__main__":
   while(1):
     try:
       print("============================")
-      # main('127.0.0.1', 12460)
-      main('172.30.115.175', 12460)
+      main('127.0.0.1', 12460)
+    #   main('172.30.115.175', 12460)
     except Exception as e:
       print(f"Failed with {e}")
       time.sleep(5)
