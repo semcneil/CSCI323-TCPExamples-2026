@@ -1,12 +1,16 @@
 from socket import *
-#server_name = '127.0.0.1'
-server_name = '172.30.190.238'
+server_name = '127.0.0.1'
+# server_name = '172.30.190.238'
 server_port = 12000
 client_socket = socket(AF_INET, SOCK_STREAM)
 client_socket.connect((server_name, server_port))
 while(1):
-	message = input('Input lowercase sentence:').encode()
-	client_socket.send(message)
-	reply = client_socket.recv(1024)
-	print('From Server: ', reply.decode())
+    message = input('Input lowercase sentence:')
+    client_socket.send(message.encode())
+    reply = client_socket.recv(1024)
+    print('From Server: ', reply.decode())
+    if "quit" in message.lower():
+        print("Shutting down client")
+        client_socket.close()
+        break
 #	client_socket.close()
