@@ -1,4 +1,7 @@
 *.pem
+.pio
+.vscode
+
 
 
 # Byte-compiled / optimized / DLL files
