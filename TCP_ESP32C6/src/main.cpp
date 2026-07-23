@@ -1,11 +1,22 @@
+/*
+  This script demonstrates TCP connection between client and server with this
+  script acting as both.  
+
+  As of 2026 July 23, the MUSTANG network allows this type of traffic.
+
+  Seth McNeill
+  2026 July 22
+*/
+
+
 #include <WiFi.h>
 
 // Wi-Fi Credentials
-const char* ssid = "somethingG";
-const char* password = "Iamaguesthere!";
+const char* ssid = "MUSTANG";
+const char* password = "";
 
 // Remote Server Details (for TCP Client)
-const char* remoteServerIP = "192.168.4.2";
+const char* remoteServerIP = "10.1.65.44";
 const uint16_t remoteServerPort = 12000;
 const uint16_t localServerPort = 12034;
 
@@ -23,28 +34,28 @@ void setup() {
   Serial.println("Starting ESP32-C6 TCP Server/Client");
 
   Serial.println();
-  // Serial.print("Connecting to Wi-Fi: ");
-  // Serial.println(ssid);
+  Serial.print("Connecting to Wi-Fi: ");
+  Serial.println(ssid);
 
-  // WiFi.begin(ssid, password);
+  WiFi.begin(ssid, password);
 
-  // // Wait for connection to your local network
-  // while (WiFi.status() != WL_CONNECTED) {
-  //   delay(500);
-  //   Serial.print(".");
-  // }
+  // Wait for connection to your local network
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
 
-  // Serial.println("\nWi-Fi connected!");
-  // Serial.print("ESP32-C6 IP Address: ");
-  // Serial.println(WiFi.localIP());
+  Serial.println("\nWi-Fi connected!");
+  Serial.print("ESP32-C6 IP Address: ");
+  Serial.println(WiFi.localIP());
 
   // Broadcasts a direct Wi-Fi network from the ESP32-C6
-  WiFi.softAP("ESP32-C6-TestNet", "12345678");
+  // WiFi.softAP("ESP32-C6-TestNet", "12345678");
 
-  IPAddress myIP = WiFi.softAPIP();
-  Serial.print("Connect your computer to Wi-Fi: ESP32-C6-TestNet\n");
-  Serial.print("ESP32-C6 Server IP Address: ");
-  Serial.println(myIP); // This will default to 192.168.4.1
+  // IPAddress myIP = WiFi.softAPIP();
+  // Serial.print("Connect your computer to Wi-Fi: ESP32-C6-TestNet\n");
+  // Serial.print("ESP32-C6 Server IP Address: ");
+  // Serial.println(myIP); // This will default to 192.168.4.1
 
   // Start the TCP Server
   tcpServer.begin();
