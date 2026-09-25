@@ -1,7 +1,7 @@
 *.pem
 .pio
 .vscode
-
+.DS_Store
 
 
 # Byte-compiled / optimized / DLL files
