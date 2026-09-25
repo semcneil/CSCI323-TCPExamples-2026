@@ -16,7 +16,7 @@ const char* ssid = "MUSTANG";
 const char* password = "";
 
 // Remote Server Details (for TCP Client)
-const char* remoteServerIP = "10.1.65.44";
+const char* remoteServerIP = "10.1.21.52";
 const uint16_t remoteServerPort = 12000;
 const uint16_t localServerPort = 12034;
 
