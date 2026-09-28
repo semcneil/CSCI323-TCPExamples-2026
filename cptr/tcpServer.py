@@ -12,7 +12,7 @@ since all computers have this set as localhost.
 from socket import *
 import argparse
 
-def main(ipAddr='127.0.0.1', portNum=12000):
+def main(ipAddr='127.0.0.1', portNum=12000, name='bob'):
     server_port = portNum
     server_socket = socket(AF_INET, SOCK_STREAM)
     server_socket.bind((ipAddr, server_port))
@@ -25,7 +25,9 @@ def main(ipAddr='127.0.0.1', portNum=12000):
         print(f'Skt: {connection_socket}, addr: {addr}, msg: {message}')
         # CRITICAL FIX: If data is empty, the client closed the connection!
         if not message: 
-            print(f"Client at {addr} disconnected cleanly.")
+            print(f"Client at {addr} sent blank so restarting.")
+            connection_socket.close()
+            connection_socket, addr = server_socket.accept()
             break
         txt = message.decode()
         if txt.lower() == 'quit':
@@ -39,12 +41,13 @@ def main(ipAddr='127.0.0.1', portNum=12000):
             connection_socket.close()
             connection_socket, addr = server_socket.accept()
             continue 
-        reply = "From Dr. Seth: ".encode() + txt.upper().encode()
+        reply = f"From {name}: ".encode() + txt.upper().encode()
         connection_socket.send(reply)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A simple TCP server. Surround the IP address with double quotes, but leave the port as just an integer.")
     parser.add_argument("-a", "--ipaddr", default="127.0.0.1", help="The IP address the server runs on")
     parser.add_argument("-p", "--port", type=int, default=12000, help="The TCP port for the server to attach to")
+    parser.add_argument("-n", "--name", default="Bob", help="The name the server gives in the response")
     args = parser.parse_args()
-    main(ipAddr=args.ipaddr, portNum=args.port)
+    main(ipAddr=args.ipaddr, portNum=args.port, name=args.name)
