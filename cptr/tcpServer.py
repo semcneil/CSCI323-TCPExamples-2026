@@ -15,6 +15,7 @@ import argparse
 def main(ipAddr='127.0.0.1', portNum=12000, name='bob'):
     server_port = portNum
     server_socket = socket(AF_INET, SOCK_STREAM)
+    server_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
     server_socket.bind((ipAddr, server_port))
     # server_socket.bind(('10.1.21.52', server_port))
     server_socket.listen(1)
@@ -26,19 +27,19 @@ def main(ipAddr='127.0.0.1', portNum=12000, name='bob'):
         # CRITICAL FIX: If data is empty, the client closed the connection!
         if not message: 
             print(f"Client at {addr} sent blank so restarting.")
-            connection_socket.close()
+            # connection_socket.close()
             connection_socket, addr = server_socket.accept()
-            break
+            continue
         txt = message.decode()
-        if txt.lower() == 'quit':
+        if 'quit' in txt.lower():
             connection_socket.send("Quitting!".encode())
             print('Closing connection and quitting')
             connection_socket.close()
             break 
-        if txt.lower() == 'bye':
+        if 'bye' in txt.lower():
             connection_socket.send("Goodbye!".encode())
             print('Closing connection and restarting')
-            connection_socket.close()
+            # connection_socket.close()
             connection_socket, addr = server_socket.accept()
             continue 
         reply = f"From {name}: ".encode() + txt.upper().encode()
