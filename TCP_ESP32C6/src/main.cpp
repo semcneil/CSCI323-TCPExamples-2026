@@ -10,15 +10,16 @@
 
 
 #include <WiFi.h>
+#include "secrets.h"
 
 // Wi-Fi Credentials
-const char* ssid = "MUSTANG";
-const char* password = "";
+const char* ssid = SSID;
+const char* password = WIFI_PWD;
 
 // Remote Server Details (for TCP Client)
-const char* remoteServerIP = "10.1.21.52";
-const uint16_t remoteServerPort = 12000;
-const uint16_t localServerPort = 12034;
+const char* remoteServerIP = SERVER_IP;
+const uint16_t remoteServerPort = REMOTE_PORT;
+const uint16_t localServerPort = LOCAL_PORT;
 
 // TCP Server setup on port 1234
 WiFiServer tcpServer(localServerPort);
@@ -31,7 +32,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, curLED);
   delay(3000);
-  Serial.println("Starting ESP32-C6 TCP Server/Client");
+  Serial.println("Starting " + String(MOD_NAME) + " TCP Server/Client");
 
   Serial.println();
   Serial.print("Connecting to Wi-Fi: ");
@@ -102,7 +103,7 @@ void loop() {
         Serial.println(request);
 
         // Echo response back to the client
-        clientList[i].println("Server acknowledged: " + request);
+        clientList[i].println("Nesso acknowledged: " + request);
       }
     }
   }
@@ -113,7 +114,7 @@ void loop() {
 
   // Try to connect to the remote server every 5 seconds
   // if (false) {
-  if (now - lastConnectAttempt > 15000) {
+  if (now - lastConnectAttempt > SEND_DELAY) {
     // This creates a new TCP connection every time rather than reusing the old one
     lastConnectAttempt = now;
 
@@ -127,7 +128,7 @@ void loop() {
       Serial.println("[Client] Connected to server!");
 
       // Send data to the remote server
-      client.println("Hello from ESP32-C6 Feather!");
+      client.println("Hello from " +  String(MOD_NAME) + "!");
 
       // Wait for a response from the remote server
       unsigned long timeout = millis();

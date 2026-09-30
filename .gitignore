@@ -2,6 +2,9 @@
 .pio
 .vscode
 .DS_Store
+TCP_ESP32C6/src/secrets.h
+TCP_ESP32C6/.gitignore
+
 
 
 # Byte-compiled / optimized / DLL files
